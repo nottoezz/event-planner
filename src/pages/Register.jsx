@@ -37,7 +37,7 @@ export default function Register() {
     e.preventDefault();
     if (!validate(form)) return;
     register(form);
-    navigate("/");
+    navigate("/login");
   }
 
   return (

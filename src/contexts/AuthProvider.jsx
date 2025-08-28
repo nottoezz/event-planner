@@ -1,39 +1,59 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AuthContext } from "./auth-store";
 
-const LS_KEY = "eventplanner:user"; // Local storage unsecure
+const LS_ACCOUNT_KEY = "eventplanner:account"; // save cred
+const LS_SESSION_KEY = "eventplanner:session"; // save cur session
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   // Load user on when page load
   useEffect(() => {
-    const raw = localStorage.getItem(LS_KEY);
-    if (raw) {
-      try { setUser(JSON.parse(raw)); } catch {
-        //
-        }
+    try {
+      const rawSession = localStorage.getItem(LS_SESSION_KEY);
+      if (rawSession) setUser(JSON.parse(rawSession));
+    } catch {
+      //
     }
   }, []);
 
   // Maintain when user change
   useEffect(() => {
-    if (user) localStorage.setItem(LS_KEY, JSON.stringify(user));
-    else localStorage.removeItem(LS_KEY);
+    if (user) localStorage.setItem(LS_SESSION_KEY, JSON.stringify(user));
+    else localStorage.removeItem(LS_SESSION_KEY);
   }, [user]);
 
-  // Simple regristration save
+  // Regristration save
   function register({ name, email, username, password }) {
-    const newUser = { id: crypto.randomUUID(), name, email, username, password };
-    setUser(newUser);
-    return newUser;
+    const newAccount = {
+      id: crypto.randomUUID(),
+      name,
+      email,
+      username,
+      password,
+    };
+    localStorage.setItem(LS_ACCOUNT_KEY, JSON.stringify(newAccount));
+    return newAccount;
   }
 
-  const value = useMemo(() => ({ user, register }), [user]);
+  // Check saved credentials, then start a session
+  function login({ username, password }) {
+    const raw = localStorage.getItem(LS_ACCOUNT_KEY);
+    if (!raw) throw new Error("No saved account. Please register first.");
+    const saved = JSON.parse(raw);
+    if (saved.username === username && saved.password === password) {
+      setUser(saved); 
+      return saved;
+    }
+    throw new Error("Invalid credentials");
+  }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  // Logout clear session
+  function logout() {
+    setUser(null);
+  }
+
+  const value = { user, register, login, logout };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
