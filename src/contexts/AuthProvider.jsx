@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./auth-store";
 
-const LS_ACCOUNT_KEY = "eventplanner:account"; // save cred
-const LS_SESSION_KEY = "eventplanner:session"; // save cur session
+const LS_ACCOUNTS = "eventplanner:accounts"; // for checking accn
+const LS_SESSION = "eventplanner:session"; // curr logged user
+
+function readAccounts() {
+  try {
+    return JSON.parse(localStorage.getItem(LS_ACCOUNTS)) || {};
+  } catch {
+    return {};
+  }
+}
+function writeAccounts(obj) {
+  localStorage.setItem(LS_ACCOUNTS, JSON.stringify(obj));
+}
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -10,8 +21,8 @@ export default function AuthProvider({ children }) {
   // Load user on when page load
   useEffect(() => {
     try {
-      const rawSession = localStorage.getItem(LS_SESSION_KEY);
-      if (rawSession) setUser(JSON.parse(rawSession));
+      const raw = localStorage.getItem(LS_SESSION);
+      if (raw) setUser(JSON.parse(raw));
     } catch {
       //
     }
@@ -19,12 +30,16 @@ export default function AuthProvider({ children }) {
 
   // Maintain when user change
   useEffect(() => {
-    if (user) localStorage.setItem(LS_SESSION_KEY, JSON.stringify(user));
-    else localStorage.removeItem(LS_SESSION_KEY);
+    if (user) localStorage.setItem(LS_SESSION, JSON.stringify(user));
+    else localStorage.removeItem(LS_SESSION);
   }, [user]);
 
-  // Regristration save
+  // Register usr
   function register({ name, email, username, password }) {
+    const accounts = readAccounts();
+    if (accounts[username]) {
+      throw new Error("Username already exists");
+    }
     const newAccount = {
       id: crypto.randomUUID(),
       name,
@@ -32,20 +47,19 @@ export default function AuthProvider({ children }) {
       username,
       password,
     };
-    localStorage.setItem(LS_ACCOUNT_KEY, JSON.stringify(newAccount));
+    accounts[username] = newAccount;
+    writeAccounts(accounts);
     return newAccount;
   }
 
-  // Check saved credentials, then start a session
+  // Login, check saved credentials, then start a session
   function login({ username, password }) {
-    const raw = localStorage.getItem(LS_ACCOUNT_KEY);
-    if (!raw) throw new Error("No saved account. Please register first.");
-    const saved = JSON.parse(raw);
-    if (saved.username === username && saved.password === password) {
-      setUser(saved); 
-      return saved;
-    }
-    throw new Error("Invalid credentials");
+    const accounts = readAccounts();
+    const saved = accounts[username];
+    if (!saved) throw new Error("No such user. Please register first.");
+    if (saved.password !== password) throw new Error("Invalid credentials");
+    setUser(saved); // start session
+    return saved;
   }
 
   // Logout clear session

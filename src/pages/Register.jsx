@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/auth-store.js";
 
 export default function Register() {
@@ -13,6 +13,7 @@ export default function Register() {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
 
   // Ensure fields are not empty and email is valid
   function validate(v) {
@@ -35,9 +36,15 @@ export default function Register() {
   // When submit validate and return error or proceed
   function handleSubmit(e) {
     e.preventDefault();
+    setServerError("");
     if (!validate(form)) return;
-    register(form);
-    navigate("/login");
+
+    try {
+      register(form);
+      navigate("/login");
+    } catch (err) {
+      setServerError(err.message || "Registration failed");
+    }
   }
 
   return (
@@ -58,6 +65,8 @@ export default function Register() {
               name="name"
               value={form.name}
               onChange={handleChange}
+              aria-invalid={!!errors.name}
+              className={errors.name ? "input-error" : undefined}
             />
             {errors.name && (
               <div className="error" role="alert">
@@ -75,6 +84,8 @@ export default function Register() {
               placeholder="you@example.com"
               value={form.email}
               onChange={handleChange}
+              aria-invalid={!!errors.email}
+              className={errors.email ? "input-error" : undefined}
             />
             {errors.email && (
               <div className="error" role="alert">
@@ -91,6 +102,8 @@ export default function Register() {
               name="username"
               value={form.username}
               onChange={handleChange}
+              aria-invalid={!!errors.username}
+              className={errors.username ? "input-error" : undefined}
             />
             {errors.username && (
               <div className="error" role="alert">
@@ -108,6 +121,8 @@ export default function Register() {
               type="password"
               value={form.password}
               onChange={handleChange}
+              aria-invalid={!!errors.password}
+              className={errors.password ? "input-error" : undefined}
             />
             {errors.password && (
               <div className="error" role="alert">
@@ -117,8 +132,17 @@ export default function Register() {
           </div>
         </div>
 
+        {serverError && (
+          <div className="error" role="alert" style={{ marginTop: ".5rem" }}>
+            {serverError}
+          </div>
+        )}
+
         <div style={{ display: "flex", gap: ".5rem", marginTop: ".75rem" }}>
           <input type="submit" value="Register" className="btn" />
+          <Link to="/login" className="btn" style={{ background: "#2c3645" }}>
+            Back to Login
+          </Link>
         </div>
       </form>
     </div>

@@ -1,26 +1,27 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { EventsContext } from "./events-store";
+import React, { useEffect, useState } from "react";
+import { EventsContext } from "./events-store.js";
 import { useAuth } from "./auth-store.js";
 
-const LS_KEY = "eventplanner:eventsByUser";
+// Save usr events
+const LS_EVENTS = "eventplanner:eventsByUser";
 
+// helpers
 function readAll() {
   try {
-    return JSON.parse(localStorage.getItem(LS_KEY)) || {};
+    return JSON.parse(localStorage.getItem(LS_EVENTS)) || {};
   } catch {
     return {};
   }
 }
 function writeAll(obj) {
-  localStorage.setItem(LS_KEY, JSON.stringify(obj));
+  localStorage.setItem(LS_EVENTS, JSON.stringify(obj));
 }
 
-// Pure helper keep identity stable
 function sortByDate(list) {
   return [...list].sort((a, b) => {
-    const aKey = `${a.date || ""} ${a.time || ""}`;
-    const bKey = `${b.date || ""} ${b.time || ""}`;
-    return aKey.localeCompare(bKey);
+    const ak = `${a.date || ""} ${a.time || ""}`;
+    const bk = `${b.date || ""} ${b.time || ""}`;
+    return ak.localeCompare(bk);
   });
 }
 
@@ -28,7 +29,7 @@ export default function EventsProvider({ children }) {
   const { user } = useAuth();
   const [events, setEvents] = useState([]);
 
-  // Load events when user changes
+  // Load users event
   useEffect(() => {
     if (!user) {
       setEvents([]);
@@ -38,7 +39,7 @@ export default function EventsProvider({ children }) {
     setEvents(all[user.id] || []);
   }, [user]);
 
-  // Persist user events
+  // Persists event on change
   useEffect(() => {
     if (!user) return;
     const all = readAll();
@@ -46,29 +47,24 @@ export default function EventsProvider({ children }) {
     writeAll(all);
   }, [user, events]);
 
-  const addEvent = useCallback(
-    (data) => {
-      const e = { id: crypto.randomUUID(), ...data, userId: user?.id };
-      setEvents((prev) => sortByDate([...prev, e]));
-    },
-    [user]
-  );
+  // CRUD
+  function addEvent(data) {
+    const e = { id: crypto.randomUUID(), ...data, userId: user?.id };
+    setEvents((prev) => sortByDate([...prev, e]));
+  }
 
-  const updateEvent = useCallback((id, patch) => {
+  function updateEvent(id, patch) {
     setEvents((prev) =>
       sortByDate(prev.map((e) => (e.id === id ? { ...e, ...patch } : e)))
     );
-  }, []);
+  }
 
-  const removeEvent = useCallback((id) => {
+  function removeEvent(id) {
     setEvents((prev) => prev.filter((e) => e.id !== id));
-  }, []);
+  }
 
-  // Save context value
-  const value = useMemo(
-    () => ({ events, addEvent, updateEvent, removeEvent }),
-    [events, addEvent, updateEvent, removeEvent]
-  );
+  // No useMemo!
+  const value = { events, addEvent, updateEvent, removeEvent };
 
   return (
     <EventsContext.Provider value={value}>{children}</EventsContext.Provider>
