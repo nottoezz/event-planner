@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header.jsx";
 import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 function Home() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </>

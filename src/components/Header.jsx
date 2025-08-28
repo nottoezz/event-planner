@@ -6,9 +6,12 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="container nav">
-        <Link to="/" className="brand">Event Planner</Link>
+        <Link to="/" className="brand">
+          Event Planner
+        </Link>
         <nav style={{ display: "flex", gap: ".75rem" }}>
           <NavLink to="/register">Register</NavLink>
+          <NavLink to="/dashboard">Dashboard</NavLink>
         </nav>
         <div style={{ marginLeft: "auto" }}>
           <span className="kpi">{user ? `Hi, ${user.name}` : "Guest"}</span>
