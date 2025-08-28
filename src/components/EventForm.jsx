@@ -91,7 +91,7 @@ export default function EventForm({ initial, onSubmit, onCancel }) {
             onChange={handleChange}
             aria-invalid={!!errors.date}
             // Help browsers enforce 4-digit years and a sane range:
-            min="2025-12-31"
+            min="2024-12-31"
             max="2099-12-31"
           />
           {errors.date && (
