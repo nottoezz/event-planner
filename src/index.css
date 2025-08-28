@@ -24,7 +24,11 @@ body,
 
 .hero {
   position: relative;
-  padding: 6rem 0 4rem;
+  min-height: calc(100vh - var(--header-h));
+  min-height: calc(100dvh - var(--header-h));
+  padding: clamp(3rem, 6vh, 6rem) 0 clamp(2rem, 4vh, 4rem);
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 480px) {
@@ -32,10 +36,12 @@ body,
     padding: 4.5rem 0 3rem;
   }
 }
+
 .hero-bg {
   position: absolute;
-  inset: 0;
+  inset: -1px;
   z-index: -1;
+  pointer-events: none;
 }
 
 .bg-gradient {
@@ -48,7 +54,7 @@ body,
     ),
     radial-gradient(
       50% 50% at 120% 10%,
-      rgba(2, 132, 199, 0.15),s
+      rgba(2, 132, 199, 0.15),
       transparent 60%
     );
 }
@@ -274,14 +280,6 @@ textarea {
   border: 1px solid #233041;
   border-radius: 0.6rem;
   padding: 0.4rem 0.5rem;
-}
-.mobile-toggle .bar {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background: #cbd5e1;
-  margin: 3px 0;
-  border-radius: 1px;
 }
 
 @media (max-width: 720px) {
