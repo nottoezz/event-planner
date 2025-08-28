@@ -1,26 +1,157 @@
+/* ==========================================================================
+   Variables & Reset
+   ========================================================================== */
+
+/* Root variables */
 :root {
   --bg: #0b0f14;
   --text: #e6edf3;
   --muted: #94a3b8;
 }
+
+/* Global reset */
 * {
   box-sizing: border-box;
 }
+
+/* Document sizing */
 html,
 body,
 #root {
   height: 100%;
 }
+
+/* ==========================================================================
+   Base Typography & Body
+   ========================================================================== */
+
 body {
   margin: 0;
   font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
   background: var(--bg);
   color: var(--text);
 }
+
+/* ==========================================================================
+   Layout Containers
+   ========================================================================== */
+
+.container {
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+  padding: 1rem;
+}
+
 .app {
   width: min(1100px, 92vw);
   margin: 4rem auto;
 }
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
 .muted {
   color: var(--muted);
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+
+/* Card */
+.card {
+  background: #121922;
+  border: 1px solid #233041;
+  border-radius: 0.9rem;
+  padding: 1rem;
+}
+
+/* Top nav segment */
+.nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+/* Brand text */
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+/* KPI pill */
+.kpi {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: #0f1620;
+  border: 1px solid #233041;
+  border-radius: 0.5rem;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+}
+
+/* Buttons */
+.btn,
+button,
+input[type="submit"] {
+  background: #4f46e5;
+  border: 0;
+  color: #fff;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+label {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  background: #0f1620;
+  border: 1px solid #233041;
+  border-radius: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  color: #e6edf3;
+}
+
+/* ==========================================================================
+   Grid
+   ========================================================================== */
+
+.grid {
+  display: grid;
+}
+
+/* ==========================================================================
+   Header (Sticky)
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(18, 25, 34, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #233041;
+}
+
+/* ==========================================================================
+   Feedback / Errors
+   ========================================================================== */
+
+.error {
+  color: #ef4444;
+  font-size: 0.9rem;
 }
