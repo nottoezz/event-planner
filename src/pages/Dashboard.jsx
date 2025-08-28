@@ -68,7 +68,10 @@ export default function Dashboard() {
       {!user && (
         <div className="callout" style={{ marginTop: "1rem" }}>
           <strong>Guest mode:</strong> You need to{" "}
-          <Link to="/login" className="btn">log in</Link> to create events.
+          <Link to="/login" className="btn">
+            log in
+          </Link>{" "}
+          to create events.
         </div>
       )}
       {notice && !user && (
@@ -77,7 +80,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Inline form */}
+      {/* Inline form (when adding or editing). Hides the list below while open. */}
       {showForm && (
         <div style={{ marginTop: "1rem" }}>
           <EventForm
@@ -91,19 +94,21 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Upcoming events list */}
-      <section className="card" style={{ marginTop: "1rem" }}>
-        <h2 style={{ marginTop: 0 }}>Upcoming events</h2>
+      {/* Upcoming events list (only show when not adding/editing) */}
+      {!showForm && (
+        <section className="card" style={{ marginTop: "1rem" }}>
+          <h2 style={{ marginTop: 0 }}>Upcoming events</h2>
 
-        <EventList
-          events={events}
-          onEdit={(ev) => {
-            setEditing(ev);
-            setShowForm(true);
-          }}
-          onDelete={removeEvent}
-        />
-      </section>
+          <EventList
+            events={events}
+            onEdit={(ev) => {
+              setEditing(ev);
+              setShowForm(true); // hide the list while editing
+            }}
+            onDelete={removeEvent}
+          />
+        </section>
+      )}
     </div>
   );
 }
