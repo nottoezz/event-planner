@@ -1,46 +1,38 @@
 # Event Planner (React + Vite)
-A small web app to help users organise and manage personal or professional events. Built to practise React, JSX, JavaScript, and the Context API. The final app will let users schedule, view, and track events like appointments, meetings, or social gatherings, per the capstone brief.
 
-# Status
-Implemented so far:
-- Sticky header (navigation bar) — persistent at the top; currently includes brand + link to Register. This aligns with the Navigation requirement for a fixed header and menu.
-- Register page — users can create an account by entering name, email, username, password with client-side validation (required fields + email format).
-- Local persistence (MVP) — the registered user is stored in localStorage (not secure) via a simple Auth provider.
-- Routing & structure — basic routes (/, /register) and an organised file layout (pages/, components/, contexts/) following the brief’s guidance to keep structure clear and code readable.
-- Runs with React + Vite — standard commands below.
+I built a small web application to help organise and manage personal or professional events. It’s a client-side React app that lets a user register, log in, and create/edit/delete events. State is handled with the Context API and persisted in `localStorage` so data survives reloads. The UI is responsive and includes a fixed header and a Help page with guidance and a contact section.
 
-# Planned next
-- Login + protected dashboard — after registering, users log in to access a dashboard that shows upcoming events in an organised view
-- Event management (CRUD) — add events (name, date, time, description, location), list them using array.map(), and allow update/delete with immediate state updates
-- Context API everywhere it matters — Auth is already in Context; I'll add an Events context to manage event data app-wide.
-- Help section — a page explaining navigation, registration/login, event create/edit/delete, and tips for organising effectively.
-- Responsive design — refine mobile/desktop styles (or optionally add React-Bootstrap) for a polished look.
-- Version control & docs — continue tracking progress with Git and keep this README clear and simple.
+---
 
-## Run locally
-```
-npm install
-npm run dev
-```
+## ✅ Capstone requirements (how I meet them)
 
+### User features
+- **Register**: I validate name, email, username, and password (required fields + email format).
+- **Login**: After registration, the user logs in to access the dashboard (no auto-login).
+- **Dashboard**: Once logged in, the dashboard displays upcoming events.
 
-# Tech
-- React + Vite
-- React Router for navigation
-- Context API
-- LocalStorage
+### Event management
+- **Add events**: name, date, time, description, location.
+- **List / calendar**: I render the upcoming events list using `array.map()` and keep it sorted by date+time.
+- **Edit / delete**: Users can update or remove events; the UI updates immediately.
+- **Per-user data**: Events are tied to the current session user. Switching accounts shows the correct user’s events.
 
-# File structure
-```
-src/
-  components/
-    Header.jsx
-  contexts/
-    AuthProvider.jsx
-    auth-store.js
-  pages/
-    Register.jsx
-  App.jsx
-  main.jsx
-  index.css
-```
+### State management
+- **Context API**: 
+  - `AuthProvider` for user accounts and session.
+  - `EventsProvider` for event data and CRUD operations.
+
+### Help feature
+- **Help page**: Explains navigation, how to register/login, how to create/edit/delete events, tips for organising, troubleshooting, and a **Contact us** section.
+
+### Responsive design
+- **Mobile-first styles**: Professional look on phones and desktops. Larger tap targets, mobile menu, fluid hero background on the home page.
+
+### Version control
+- **Git**: I tracked work in small commits. This README explains how to run and review the app.
+
+### React + Vite
+- **Tooling**: The reviewer can run the app with:
+  ```bash
+  npm install
+  npm run dev

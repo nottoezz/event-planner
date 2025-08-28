@@ -32,10 +32,8 @@ export default function Header() {
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          {/* Simple hamburger icon */}
-          <span className="bar" />
-          <span className="bar" />
-          <span className="bar" />
+          {/* Simple hamburger icon */} 
+          ☰
         </button>
 
         {/* Primary nav */}
