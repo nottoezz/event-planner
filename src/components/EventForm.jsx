@@ -18,7 +18,12 @@ export default function EventForm({ initial, onSubmit, onCancel }) {
   function validate(v) {
     const e = {};
     if (!v.name?.trim()) e.name = "Event name is required";
+
+    // Date must exist AND follow ISO YYYY-MM-DD (4-digit year)
     if (!v.date) e.date = "Date is required";
+    else if (!/^\d{4}-\d{2}-\d{2}$/.test(v.date))
+      e.date = "Use YYYY-MM-DD with a 4-digit year";
+
     if (!v.time) e.time = "Time is required";
     if (!v.location?.trim()) e.location = "Location is required";
     setErrors(e);
@@ -85,6 +90,9 @@ export default function EventForm({ initial, onSubmit, onCancel }) {
             value={values.date}
             onChange={handleChange}
             aria-invalid={!!errors.date}
+            // Help browsers enforce 4-digit years and a sane range:
+            min="2025-12-31"
+            max="2099-12-31"
           />
           {errors.date && (
             <div className="error" role="alert">
