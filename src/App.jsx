@@ -3,6 +3,7 @@ import Header from "./components/Header.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Login from "./pages/Login.jsx";
+import Help from "./pages/Help.jsx";
 
 function Home() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/help" element={<Help />} />
       </Routes>
     </>
   );

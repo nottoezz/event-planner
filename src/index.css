@@ -2,19 +2,16 @@
    Variables & Reset
    ========================================================================== */
 
-/* Root variables */
 :root {
   --bg: #0b0f14;
   --text: #e6edf3;
   --muted: #94a3b8;
 }
 
-/* Global reset */
 * {
   box-sizing: border-box;
 }
 
-/* Document sizing */
 html,
 body,
 #root {
@@ -30,6 +27,9 @@ body {
   font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
   background: var(--bg);
   color: var(--text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ==========================================================================
@@ -40,6 +40,11 @@ body {
   width: min(1100px, 92vw);
   margin: 0 auto;
   padding: 1rem;
+}
+@media (max-width: 480px) {
+  .container {
+    padding: 0.75rem;
+  }
 }
 
 .app {
@@ -55,33 +60,49 @@ body {
   color: var(--muted);
 }
 
+ul.reset {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 /* ==========================================================================
    Components
    ========================================================================== */
 
-/* Card */
 .card {
   background: #121922;
   border: 1px solid #233041;
   border-radius: 0.9rem;
   padding: 1rem;
 }
+@media (max-width: 480px) {
+  .card {
+    padding: 0.85rem;
+  }
+}
 
-/* Top nav segment */
 .nav {
   display: flex;
   gap: 1rem;
   align-items: center;
+  justify-content: space-between;
   padding: 0.75rem 0;
 }
 
-/* Brand text */
-.brand {
-  font-weight: 700;
-  letter-spacing: 0.4px;
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-/* KPI pill */
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  color: var(--text);
+}
+
 .kpi {
   display: inline-block;
   padding: 0.25rem 0.5rem;
@@ -92,7 +113,6 @@ body {
   font-size: 0.85rem;
 }
 
-/* Buttons */
 .btn,
 button,
 input[type="submit"] {
@@ -104,6 +124,37 @@ input[type="submit"] {
   font-weight: 600;
   cursor: pointer;
 }
+.btn:hover {
+  filter: brightness(1.05);
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #233041;
+}
+.btn-ghost:hover {
+  background: #0f1620;
+}
+
+.nav-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.45rem;
+}
+.nav-links a:hover {
+  background: #0f1620;
+}
+.nav-links a.active {
+  background: #1c2430;
+  color: #e6edf3;
+  border: 1px solid #233041;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
 /* ==========================================================================
    Forms
@@ -114,8 +165,8 @@ label {
   font-size: 0.9rem;
   display: block;
   margin-bottom: 0.25rem;
-}
 
+}
 input,
 textarea {
   width: 100%;
@@ -124,9 +175,16 @@ textarea {
   border-radius: 0.6rem;
   padding: 0.65rem 0.75rem;
   color: #e6edf3;
+  font-size: 16px;
 }
 
-ul.reset { list-style: none; padding: 0; margin: 0; }
+.error {
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+.input-error {
+  border-color: #ef4444;
+}
 
 /* ==========================================================================
    Grid
@@ -144,9 +202,63 @@ ul.reset { list-style: none; padding: 0; margin: 0; }
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(18, 25, 34, 0.85);
+  background: rgba(18, 25, 34, 0.9);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid #233041;
+}
+
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid #233041;
+  border-radius: 0.6rem;
+  padding: 0.4rem 0.5rem;
+}
+.mobile-toggle .bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #cbd5e1;
+  margin: 3px 0;
+  border-radius: 1px;
+}
+
+@media (max-width: 720px) {
+  .mobile-toggle {
+    display: inline-flex;
+  }
+  .nav-links {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    top: calc(100% + 0.5rem);
+    display: grid;
+    gap: 0.5rem;
+    background: #0f1620;
+    border: 1px solid #233041;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    transform-origin: top;
+    transform: scaleY(0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  .nav-links.open {
+    transform: scaleY(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .nav-actions {
+    border-top: 1px dashed #233041;
+    padding-top: 0.5rem;
+    margin-top: 0.25rem;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
 }
 
 /* ==========================================================================
@@ -156,4 +268,47 @@ ul.reset { list-style: none; padding: 0; margin: 0; }
 .error {
   color: #ef4444;
   font-size: 0.9rem;
+}
+
+.input-error {
+  border-color: #ef4444;
+}
+
+/* ==========================================================================
+   Help Page Refinements
+   ========================================================================== */
+
+.help-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+@media (min-width: 720px) {
+  .help-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.help-toc {
+  display: block;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #233041;
+  border-radius: 0.6rem;
+  background: #0f1620;
+  color: #e6edf3;
+  text-decoration: none;
+}
+.help-toc:hover {
+  filter: brightness(1.05);
+}
+
+.help-section h2 {
+  margin-top: 0;
+}
+
+.callout {
+  border-left: 3px solid #4f46e5;
+  background: #0f1620;
+  border: 1px solid #233041;
+  border-radius: 0.6rem;
+  padding: 0.75rem 0.9rem;
 }
