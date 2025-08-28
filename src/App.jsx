@@ -4,17 +4,7 @@ import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Login from "./pages/Login.jsx";
 import Help from "./pages/Help.jsx";
-
-function Home() {
-  return (
-    <div className="container" style={{ marginTop: "5rem" }}>
-      <h1>Event Planner</h1>
-      <p className="muted">
-        Project template. We’ll add features step-by-step.
-      </p>
-    </div>
-  );
-}
+import Home from "./pages/Home.jsx";
 
 export default function App() {
   return (
