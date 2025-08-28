@@ -1,20 +1,60 @@
+import { useState } from "react";
+import { useEvents } from "../contexts/events-store.js";
+import EventForm from "../components/EventForm.jsx";
+import EventList from "../components/EventList.jsx";
+
 export default function Dashboard() {
+  const { events, addEvent, updateEvent, removeEvent } = useEvents();
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState(null);
+
+  function handleCreate(values) {
+    addEvent(values); 
+    setShowForm(false);
+  }
+
+  function handleUpdate(values) {
+    updateEvent(editing.id, values);
+    setEditing(null);
+    setShowForm(false);
+  }
+
   return (
     <div className="container" style={{ marginTop: "5rem" }}>
-      <h1>Dashboard</h1>
+      {/* Header + add button */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>Dashboard</h1>
+        <button
+          aria-label="Add event"
+          title="Add event"
+          className="btn"
+          onClick={() => { setEditing(null); setShowForm(true); }}
+          style={{ borderRadius: "999px", width: 42, height: 42, padding: 0, fontSize: "1.2rem" }}
+        >
+          +
+        </button>
+      </div>
 
+      {/* Inline form */}
+      {showForm && (
+        <div style={{ marginTop: "1rem" }}>
+          <EventForm
+            initial={editing || undefined}
+            onSubmit={editing ? handleUpdate : handleCreate}
+            onCancel={() => { setEditing(null); setShowForm(false); }}
+          />
+        </div>
+      )}
+
+      {/* Upcoming events list */}
       <section className="card" style={{ marginTop: "1rem" }}>
         <h2 style={{ marginTop: 0 }}>Upcoming events</h2>
 
-        <p className="muted" aria-live="polite">
-          No events yet — once you add some, they’ll appear here in date order.
-        </p>
-
-        {/* TODO: After we add Events context:
-            - fetch the current user's events
-            - sort by date/time
-            - render with array.map(...)
-        */}
+        <EventList
+          events={events}
+          onEdit={(ev) => { setEditing(ev); setShowForm(true); }}
+          onDelete={removeEvent}
+        />
       </section>
     </div>
   );
