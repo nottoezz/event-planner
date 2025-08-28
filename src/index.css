@@ -24,11 +24,11 @@ body,
 
 .hero {
   position: relative;
-  min-height: calc(100vh - var(--header-h));
-  min-height: calc(100dvh - var(--header-h));
+  min-height: 90vh;
   padding: clamp(3rem, 6vh, 6rem) 0 clamp(2rem, 4vh, 4rem);
   display: flex;
   align-items: center;
+  overflow: hidden;
 }
 
 @media (max-width: 480px) {
@@ -73,10 +73,12 @@ body,
   max-width: 760px;
   margin: 0 auto;
 }
+
 .hero-content h1 {
   margin: 0 0 0.5rem;
   font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem);
 }
+
 .hero-cta {
   display: flex;
   justify-content: center;
@@ -109,6 +111,7 @@ body {
   margin: 0 auto;
   padding: 1rem;
 }
+
 @media (max-width: 480px) {
   .container {
     padding: 0.75rem;
@@ -144,6 +147,7 @@ ul.reset {
   border-radius: 0.9rem;
   padding: 1rem;
 }
+
 @media (max-width: 480px) {
   .card {
     padding: 0.85rem;
@@ -192,13 +196,16 @@ input[type="submit"] {
   font-weight: 600;
   cursor: pointer;
 }
+
 .btn:hover {
   filter: brightness(1.05);
 }
+
 .btn-ghost {
   background: transparent;
   border: 1px solid #233041;
 }
+
 .btn-ghost:hover {
   background: #0f1620;
 }
@@ -209,9 +216,11 @@ input[type="submit"] {
   padding: 0.35rem 0.55rem;
   border-radius: 0.45rem;
 }
+
 .nav-links a:hover {
   background: #0f1620;
 }
+
 .nav-links a.active {
   background: #1c2430;
   color: #e6edf3;
@@ -234,6 +243,7 @@ label {
   display: block;
   margin-bottom: 0.25rem;
 }
+
 input,
 textarea {
   width: 100%;
@@ -341,6 +351,7 @@ textarea {
   display: grid;
   gap: 0.5rem;
 }
+
 @media (min-width: 720px) {
   .help-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -356,6 +367,7 @@ textarea {
   color: #e6edf3;
   text-decoration: none;
 }
+
 .help-toc:hover {
   filter: brightness(1.05);
 }
